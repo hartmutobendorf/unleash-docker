@@ -16,9 +16,11 @@ services:
       timeout: 1m
       retries: 5
       start_period: 15s
+    networks:
+      - mynw
   db:
-    expose:
-      - "5432"
+    ports:
+      - "5432:5432"
     image: postgres:10-alpine
     environment:
       POSTGRES_DB: "db"
@@ -29,3 +31,8 @@ services:
       timeout: 1m
       retries: 5
       start_period: 10s
+    networks:
+      - mynw
+
+networks:
+  mynw:
