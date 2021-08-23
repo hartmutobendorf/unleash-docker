@@ -1,9 +1,16 @@
 version: "3.4"
 services:
-  web:
-    build: .
+  ssl-proxy:
+    image: ghcr.io/chainstep/ssl-proxy
     ports:
       - "4242:4242"
+    command: /ssl-proxy/ssl-proxy -from 0.0.0.0:4242 -to web:4242 -domain=devops.planetenangst.de
+    networks:
+      - mynw
+
+
+  web:
+    build: .
     environment:
       DATABASE_URL: "postgres://postgres:unleash@db/postgres"
       DATABASE_SSL: "false"
@@ -19,8 +26,6 @@ services:
     networks:
       - mynw
   db:
-    ports:
-      - "5432:5432"
     image: postgres:10-alpine
     environment:
       POSTGRES_DB: "db"
